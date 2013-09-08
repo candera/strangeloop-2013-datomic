@@ -1,0 +1,763 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Real World Datomic: An Experience Report</title>
+<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
+<meta name="title" content="Real World Datomic: An Experience Report"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2013-09-08 12:14:26 EDT"/>
+<meta name="author" content="Craig Andera"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+
+<link rel="stylesheet" type="text/css" href="common.css" />
+<link rel="stylesheet" type="text/css" href="screen.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="projection.css" media="projection" />
+<link rel="stylesheet" type="text/css" href="presenter.css" media="presenter" />
+<link rel="stylesheet" type="text/css" href="local.css" />
+
+
+</head>
+<body>
+
+<div id="preamble">
+
+</div>
+
+<div id="content">
+<h1 class="title">Real World Datomic: An Experience Report</h1>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 Real-World Datomic: An Experience Report</a>
+<ul>
+<li><a href="#sec-1-1">1.1 Slides</a>
+<ul>
+<li><a href="#sec-1-1-1">1.1.1 Me</a></li>
+<li><a href="#sec-1-1-2">1.1.2 Room Key</a></li>
+<li><a href="#sec-1-1-3">1.1.3 The Problem</a></li>
+<li><a href="#sec-1-1-4">1.1.4 Datomic's Architecture</a></li>
+<li><a href="#sec-1-1-5">1.1.5 Datomic's Data Model</a></li>
+<li><a href="#sec-1-1-6">1.1.6 Attributes</a></li>
+<li><a href="#sec-1-1-7">1.1.7 Capturing Events - Schema</a></li>
+<li><a href="#sec-1-1-8">1.1.8 Capturing Events - Example</a></li>
+<li><a href="#sec-1-1-9">1.1.9 Capturing Events - Refs</a></li>
+<li><a href="#sec-1-1-10">1.1.10 Storing and Retrieving Data in Datomic</a></li>
+<li><a href="#sec-1-1-11">1.1.11 Datomic Indexes</a></li>
+<li><a href="#sec-1-1-12">1.1.12 EAVT and AEVT</a></li>
+<li><a href="#sec-1-1-13">1.1.13 Capturing Events - EAVT</a></li>
+<li><a href="#sec-1-1-14">1.1.14 Capturing Events - EAVT</a></li>
+<li><a href="#sec-1-1-15">1.1.15 Capturing Events - AEVT</a></li>
+<li><a href="#sec-1-1-16">1.1.16 AVET and VAET</a></li>
+<li><a href="#sec-1-1-17">1.1.17 Capturing Events - AVET</a></li>
+<li><a href="#sec-1-1-18">1.1.18 Capturing Events - VAET</a></li>
+<li><a href="#sec-1-1-19">1.1.19 Index Storage and Retrieval</a></li>
+<li><a href="#sec-1-1-20">1.1.20 Trying to Solve the Problem - Query</a></li>
+<li><a href="#sec-1-1-21">1.1.21 Why This Didn't Work</a></li>
+<li><a href="#sec-1-1-22">1.1.22 Anatomy of an Entity ID</a></li>
+<li><a href="#sec-1-1-23">1.1.23 A Change In Approach</a></li>
+<li><a href="#sec-1-1-24">1.1.24 The Code</a></li>
+<li><a href="#sec-1-1-25">1.1.25 Why You Shouldn't Always Do This</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-2">1.2 Questions?</a></li>
+<li><a href="#sec-1-3">1.3 Thanks!</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">2 Footer</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Real-World Datomic: An Experience Report &nbsp;&nbsp;&nbsp;<span class="tag"><span class="title">title</span>&nbsp;<span class="slide">slide</span></span></h2>
+<div class="outline-text-2" id="text-1">
+
+
+
+
+
+
+</div>
+
+<div id="outline-container-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> Slides</h3>
+<div class="outline-text-3" id="text-1-1">
+
+
+</div>
+
+<div id="outline-container-1-1-1" class="outline-4">
+<h4 id="sec-1-1-1"><span class="section-number-4">1.1.1</span> Me &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-1">
+
+<ul>
+<li id="sec-1-1-1-1">Craig Andera<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-1-2">@craigandera<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-1-3">craig@thinkrelevance.com<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-1-4"><span class="todo TODO"> TODO</span> Podcast URL?<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-1-5"><span class="todo TODO"> TODO</span> Update what needs updating<br/>
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-1-1-2" class="outline-4">
+<h4 id="sec-1-1-2"><span class="section-number-4">1.1.2</span> Room Key</h4>
+<div class="outline-text-4" id="text-1-1-2">
+
+<ul>
+<li id="sec-1-1-2-1"><a href="http://roomkey.com">http://roomkey.com</a><br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-2-2">Employer of Clojure Programmers<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-2-3"><a href="http://is.gd/rkpodcast">http://is.gd/rkpodcast</a><br/>
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-1-1-3" class="outline-4">
+<h4 id="sec-1-1-3"><span class="section-number-4">1.1.3</span> The Problem &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-3">
+
+<ul>
+<li id="sec-1-1-3-1">Provide a summary of sales funnel events for Room Key<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-3-2">Users move through the website<br/>
+<ul>
+<li id="sec-1-1-3-2-1">impression -&gt; hotel details -&gt; lead -&gt; booking<br/>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-3-3">Want per-day event counts by hotel &amp; event type<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-3-4">30 days * ~20 events/sec * ~5 hotels/event<br/>
+<ul>
+<li id="sec-1-1-3-4-1">=&gt; ~250M hotel-events<br/>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-1-1-4" class="outline-4">
+<h4 id="sec-1-1-4"><span class="section-number-4">1.1.4</span> Datomic's Architecture &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-4">
+
+<p><img src="datomic-architecture.png"  alt="datomic-architecture.png" />
+</p></div>
+
+</div>
+
+<div id="outline-container-1-1-5" class="outline-4">
+<h4 id="sec-1-1-5"><span class="section-number-4">1.1.5</span> Datomic's Data Model &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-5">
+
+<ul>
+<li id="sec-1-1-5-1">All facts stored as <code>datoms</code><br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-5-2">A datom is EAVT tuple<br/>
+<ul>
+<li id="sec-1-1-5-2-1"><code>Entity</code> The thing we're modeling<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-5-2-2"><code>Attribute</code> The aspect of the entity we're describing<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-5-2-3"><code>Value</code> The quantity of quality we're describing<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-5-2-4"><code>Time</code> When we learned this fact<br/>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-1-1-6" class="outline-4">
+<h4 id="sec-1-1-6"><span class="section-number-4">1.1.6</span> Attributes &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-6">
+
+<ul>
+<li id="sec-1-1-6-1">Have a <span style="text-decoration:underline;">type</span>, an <span style="text-decoration:underline;">ident</span>, and a <span style="text-decoration:underline;">cardinality</span><br/>
+<ul>
+<li id="sec-1-1-6-1-1">Optionally other stuff<br/>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-6-2">Types include the usual scalars: strings, numbers, etc.<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-6-3">Also include <code>refs</code><br/>
+<ul>
+<li id="sec-1-1-6-3-1">Value is an entity ID<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-6-3-2">Allows datoms to form graphs<br/>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-1-1-7" class="outline-4">
+<h4 id="sec-1-1-7"><span class="section-number-4">1.1.7</span> Capturing Events - Schema &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-7">
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption></caption>
+<colgroup><col class="left" /><col class="left" /><col class="left" />
+</colgroup>
+<thead>
+<tr><th scope="col" class="left">Attribute</th><th scope="col" class="left">Type</th><th scope="col" class="left">Qualifiers</th></tr>
+</thead>
+<tbody>
+<tr><td class="left"><code>:roomkey.hotel/id</code></td><td class="left">string</td><td class="left">unique</td></tr>
+<tr><td class="left"><code>:roomkey.event/type</code></td><td class="left">ref</td><td class="left">single</td></tr>
+<tr><td class="left"><code>:roomkey.event/hotels</code></td><td class="left">ref</td><td class="left">many</td></tr>
+<tr><td class="left"><code>:roomkey.event/time</code></td><td class="left">inst</td><td class="left">single</td></tr>
+</tbody>
+</table>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-1-8" class="outline-4">
+<h4 id="sec-1-1-8"><span class="section-number-4">1.1.8</span> Capturing Events - Example &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-8">
+
+<p><img src="schema1.png"  alt="schema1.png" />
+</p></div>
+
+</div>
+
+<div id="outline-container-1-1-9" class="outline-4">
+<h4 id="sec-1-1-9"><span class="section-number-4">1.1.9</span> Capturing Events - Refs &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-9">
+
+<p><img src="schema1-with-refs.png"  alt="schema1-with-refs.png" />
+</p></div>
+
+</div>
+
+<div id="outline-container-1-1-10" class="outline-4">
+<h4 id="sec-1-1-10"><span class="section-number-4">1.1.10</span> Storing and Retrieving Data in Datomic &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-10">
+
+<ul>
+<li id="sec-1-1-10-1">One or more datoms submitted to the transactor<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-10-2">Datoms written transactionally to the log<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-10-3">All datoms in the transaction get the same <code>t</code> value<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-10-4">All datoms also stored redundantly in the <code>indexes</code><br/>
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-1-1-11" class="outline-4">
+<h4 id="sec-1-1-11"><span class="section-number-4">1.1.11</span> Datomic Indexes &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-11">
+
+<ul>
+<li id="sec-1-1-11-1">Every datom stored in two or more <code>indexes</code><br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-11-2">Index is logically a sorted set of datoms<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-11-3">Indexes named by their sort order<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-11-4">EAVT, AEVT, AVET, and VAET<br/>
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-1-1-12" class="outline-4">
+<h4 id="sec-1-1-12"><span class="section-number-4">1.1.12</span> EAVT and AEVT &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-12">
+
+<ul>
+<li id="sec-1-1-12-1">All datoms stored in these<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-12-2">EAVT<br/>
+<ul>
+<li id="sec-1-1-12-2-1">Efficient access to all attributes of an entity<br/>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-12-3">AEVT<br/>
+<ul>
+<li id="sec-1-1-12-3-1">Efficient access to particular attributes of an entity<br/>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-1-1-13" class="outline-4 eavt-table">
+<h4 id="sec-1-1-13"><span class="section-number-4">1.1.13</span> Capturing Events - EAVT &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-13">
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption></caption>
+<colgroup><col class="right" /><col class="left" /><col class="right" /><col class="right" />
+</colgroup>
+<thead>
+<tr><th scope="col" class="right">E</th><th scope="col" class="left">A</th><th scope="col" class="right">V</th><th scope="col" class="right">T</th></tr>
+</thead>
+<tbody>
+<tr><td class="right">1234</td><td class="left">type</td><td class="right">123</td><td class="right">1111</td></tr>
+<tr><td class="right">1234</td><td class="left">time</td><td class="right">10:13:02</td><td class="right">1111</td></tr>
+<tr><td class="right">1234</td><td class="left">hotel</td><td class="right">12345</td><td class="right">1111</td></tr>
+<tr><td class="right">1234</td><td class="left">hotel</td><td class="right">23456</td><td class="right">1111</td></tr>
+<tr><td class="right">2345</td><td class="left">type</td><td class="right">234</td><td class="right">2222</td></tr>
+<tr><td class="right">2345</td><td class="left">time</td><td class="right">10:14:22</td><td class="right">2222</td></tr>
+<tr><td class="right">2345</td><td class="left">hotel</td><td class="right">23456</td><td class="right">2222</td></tr>
+</tbody>
+</table>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-1-14" class="outline-4 eavt-table">
+<h4 id="sec-1-1-14"><span class="section-number-4">1.1.14</span> Capturing Events - EAVT &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-14">
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption></caption>
+<colgroup><col class="right" /><col class="right" /><col class="right" /><col class="right" />
+</colgroup>
+<thead>
+<tr><th scope="col" class="right">E</th><th scope="col" class="right">A</th><th scope="col" class="right">V</th><th scope="col" class="right">T</th></tr>
+</thead>
+<tbody>
+<tr><td class="right">1234</td><td class="right">26</td><td class="right">123</td><td class="right">1111</td></tr>
+<tr><td class="right">1234</td><td class="right">27</td><td class="right">10:13:02</td><td class="right">1111</td></tr>
+<tr><td class="right">1234</td><td class="right">28</td><td class="right">12345</td><td class="right">1111</td></tr>
+<tr><td class="right">1234</td><td class="right">28</td><td class="right">23456</td><td class="right">1111</td></tr>
+<tr><td class="right">2345</td><td class="right">26</td><td class="right">234</td><td class="right">2222</td></tr>
+<tr><td class="right">2345</td><td class="right">27</td><td class="right">10:14:22</td><td class="right">2222</td></tr>
+<tr><td class="right">2345</td><td class="right">28</td><td class="right">23456</td><td class="right">2222</td></tr>
+</tbody>
+</table>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-1-15" class="outline-4 eavt-table">
+<h4 id="sec-1-1-15"><span class="section-number-4">1.1.15</span> Capturing Events - AEVT &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-15">
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption></caption>
+<colgroup><col class="right" /><col class="right" /><col class="right" /><col class="right" />
+</colgroup>
+<thead>
+<tr><th scope="col" class="right">E</th><th scope="col" class="right">A</th><th scope="col" class="right">V</th><th scope="col" class="right">T</th></tr>
+</thead>
+<tbody>
+<tr><td class="right">1234</td><td class="right">26</td><td class="right">123</td><td class="right">1111</td></tr>
+<tr><td class="right">2345</td><td class="right">26</td><td class="right">234</td><td class="right">2222</td></tr>
+<tr><td class="right">1234</td><td class="right">27</td><td class="right">10:13:02</td><td class="right">1111</td></tr>
+<tr><td class="right">2345</td><td class="right">27</td><td class="right">10:14:22</td><td class="right">2222</td></tr>
+<tr><td class="right">1234</td><td class="right">28</td><td class="right">12345</td><td class="right">1111</td></tr>
+<tr><td class="right">1234</td><td class="right">28</td><td class="right">23456</td><td class="right">1111</td></tr>
+<tr><td class="right">2345</td><td class="right">28</td><td class="right">23456</td><td class="right">2222</td></tr>
+</tbody>
+</table>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-1-16" class="outline-4">
+<h4 id="sec-1-1-16"><span class="section-number-4">1.1.16</span> AVET and VAET &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-16">
+
+<ul>
+<li id="sec-1-1-16-1">AVET<br/>
+<ul>
+<li id="sec-1-1-16-1-1">Only stores datoms with attribute marked <code>:db/index</code><br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-16-1-2">Efficient lookup of entities by attribute/value pairing<br/>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-16-2">VAET<br/>
+<ul>
+<li id="sec-1-1-16-2-1">Only stores datoms with attribute of type <code>ref</code><br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-16-2-2">Allows efficient navigation of relationships in reverse<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-16-2-3">Also called the <code>reverse index</code><br/>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-1-1-17" class="outline-4 eavt-table">
+<h4 id="sec-1-1-17"><span class="section-number-4">1.1.17</span> Capturing Events - AVET &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-17">
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption></caption>
+<colgroup><col class="right" /><col class="right" /><col class="left" /><col class="right" />
+</colgroup>
+<thead>
+<tr><th scope="col" class="right">E</th><th scope="col" class="right">A</th><th scope="col" class="left">V</th><th scope="col" class="right">T</th></tr>
+</thead>
+<tbody>
+<tr><td class="right">12345</td><td class="right">25</td><td class="left">"Hotel 1"</td><td class="right">888</td></tr>
+<tr><td class="right">23456</td><td class="right">25</td><td class="left">"Hotel 2"</td><td class="right">999</td></tr>
+</tbody>
+</table>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-1-18" class="outline-4 eavt-table">
+<h4 id="sec-1-1-18"><span class="section-number-4">1.1.18</span> Capturing Events - VAET &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-18">
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption></caption>
+<colgroup><col class="right" /><col class="right" /><col class="right" /><col class="right" />
+</colgroup>
+<thead>
+<tr><th scope="col" class="right">E</th><th scope="col" class="right">A</th><th scope="col" class="right">V</th><th scope="col" class="right">T</th></tr>
+</thead>
+<tbody>
+<tr><td class="right">1234</td><td class="right">26</td><td class="right">123</td><td class="right">1111</td></tr>
+<tr><td class="right">2345</td><td class="right">26</td><td class="right">234</td><td class="right">2222</td></tr>
+<tr><td class="right">1234</td><td class="right">28</td><td class="right">12345</td><td class="right">1111</td></tr>
+<tr><td class="right">1234</td><td class="right">28</td><td class="right">23456</td><td class="right">1111</td></tr>
+<tr><td class="right">2345</td><td class="right">28</td><td class="right">23456</td><td class="right">2222</td></tr>
+</tbody>
+</table>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-1-19" class="outline-4">
+<h4 id="sec-1-1-19"><span class="section-number-4">1.1.19</span> Index Storage and Retrieval &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-19">
+
+<ul>
+<li id="sec-1-1-19-1">Datoms are stored in compressed chunks called <code>segments</code><br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-19-2">Segments are stored as a tree<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-19-3">Segments are immutable once written<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-19-4">Each transaction conceptually creates a new root<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-19-5">Actual indexing happens less frequently<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-19-6">Peers pull segments the appropriate index as needed<br/>
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-1-1-20" class="outline-4">
+<h4 id="sec-1-1-20"><span class="section-number-4">1.1.20</span> Trying to Solve the Problem - Query &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-20">
+
+
+
+
+<pre class="src src-clojure">[<span style="color: #7fffd4;">:find</span> ?event-type ?hotel-id ?day (<span style="color: #b0c4de;">count</span> ?event)
+ <span style="color: #7fffd4;">:in</span> $ [?hotel-id ...] ?since
+ <span style="color: #7fffd4;">:where</span>
+ [?hotel-eid <span style="color: #7fffd4;">:roomkey.hotel/id</span> ?hotel-id]
+ [?event <span style="color: #7fffd4;">:roomkey.event/hotel</span> ?hotel-eid]
+ [?event <span style="color: #7fffd4;">:roomkey.event/time</span> ?time]
+ [(<span style="color: #b0c4de;">&lt;=</span> ?since ?time)]
+ [(roomkey.time/midnight ?time) ?day]
+ [?event <span style="color: #7fffd4;">:roomkey.event/type</span> ?event-type]]
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-1-1-21" class="outline-4">
+<h4 id="sec-1-1-21"><span class="section-number-4">1.1.21</span> Why This Didn't Work &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-21">
+
+<ul>
+<li id="sec-1-1-21-1">Too much data, not enough time: ~250M datoms, 100ms<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-21-2">No query order eliminates enough data<br/>
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-1-1-22" class="outline-4">
+<h4 id="sec-1-1-22"><span class="section-number-4">1.1.22</span> Anatomy of an Entity ID &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-22">
+
+<ul>
+<li id="sec-1-1-22-1">Entity IDs have two parts<br/>
+<ul>
+<li id="sec-1-1-22-1-1">High bits are the <code>partition</code> ID<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-22-1-2">Low bits are a timelike component<br/>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-22-2">Partition ID user-assigned at entity creation<br/>
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-1-1-23" class="outline-4">
+<h4 id="sec-1-1-23"><span class="section-number-4">1.1.23</span> A Change In Approach &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-23">
+
+<ul>
+<li id="sec-1-1-23-1">Stop recording time explicitly<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-23-2">Record events using a dedicated partition<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-23-3">Use <code>seek-datoms</code><br/>
+<ul>
+<li id="sec-1-1-23-3-1">Returns <code>java.lang.Iterable</code> over raw index data<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-23-3-2">Fast, lazy, reduceable<br/>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-23-4"><code>entid-at</code><br/>
+<ul>
+<li id="sec-1-1-23-4-1">Given a time and a partition, get an EID<br/>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-23-5">A big, giant cache<br/>
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-1-1-24" class="outline-4 smaller-code">
+<h4 id="sec-1-1-24"><span class="section-number-4">1.1.24</span> The Code &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-24">
+
+
+
+
+<pre class="src src-clojure">(<span style="color: #00ffff;">defn-</span> <span style="color: #87cefa;">datoms-between</span>
+  <span style="color: #ffa07a;">"Returns a reducible collection of datoms created</span>
+<span style="color: #ffa07a;">  between the start and end dates in a single partition."</span>
+  [db partition start end]
+  (<span style="color: #00ffff;">let</span> [start-e (d/entid-at db
+                            partition
+                            start)
+        end-e   (d/entid-at db
+                            partition
+                            end)]
+    (<span style="color: #00ffff;">-&gt;&gt;</span> (d/seek-datoms db <span style="color: #7fffd4;">:eavt</span> start-e)
+         (r/take-while #(<span style="color: #b0c4de;">&lt;</span> (<span style="color: #7fffd4;">:e</span> %) end-e)))))
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-1-1-25" class="outline-4">
+<h4 id="sec-1-1-25"><span class="section-number-4">1.1.25</span> Why You Shouldn't Always Do This &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-25">
+
+<ul>
+<li id="sec-1-1-25-1">Datalog is a big deal<br/>
+<ul>
+<li id="sec-1-1-25-1-1">Query as data<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-25-1-2">Future improvements to query<br/>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-25-2">Segment caching: hot data often in-memory<br/>
+</li>
+</ul>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> Questions? &nbsp;&nbsp;&nbsp;<span class="tag"><span class="title">title</span>&nbsp;<span class="slide">slide</span></span></h3>
+<div class="outline-text-3" id="text-1-2">
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> Thanks! &nbsp;&nbsp;&nbsp;<span class="tag"><span class="title">title</span>&nbsp;<span class="slide">slide</span></span></h3>
+<div class="outline-text-3" id="text-1-3">
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Footer</h2>
+<div class="outline-text-2" id="text-2">
+
+
+
+
+
+
+<script type="text/javascript" src="org-html-slideshow.js"></script>
+
+
+
+</div>
+</div>
+</div>
+
+<div id="postamble">
+<p class="date">Date: 2013-09-08 12:14:26 EDT</p>
+<p class="author">Author: Craig Andera</p>
+<p class="creator">Org version 7.8.03 with Emacs version 24</p>
+<a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
+
+</div>
+</body>
+</html>

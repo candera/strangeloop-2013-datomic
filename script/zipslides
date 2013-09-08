@@ -1,0 +1,9 @@
+#!/bin/bash
+
+cd `dirname $0`/..
+
+ZIPNAME=strangeloop-2013-datomic-experience-report.zip
+
+mkdir -p out
+rm out/$ZIPNAME
+zip out/$ZIPNAME *.js *.html *.css *.png *.org

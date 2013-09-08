@@ -24,10 +24,12 @@
 **** Craig Andera
 **** @craigandera
 **** craig@thinkrelevance.com
-
+**** TODO Podcast URL?
 **** TODO Update what needs updating
-**** TODO Maybe mention the podcast
-**** TODO Mention Room Key
+*** Room Key
+**** http://roomkey.com
+**** Employer of Clojure Programmers
+**** http://is.gd/rkpodcast
 *** The Problem                                                       :slide:
 **** Provide a summary of sales funnel events for Room Key
 **** Users move through the website
@@ -40,26 +42,29 @@
 *** Datomic's Data Model                                              :slide:
 **** All facts stored as =datoms=
 **** A datom is EAVT tuple
-***** =entity= The thing we're modeling
-***** =attribute= The aspect of the entity we're describing
-***** =value= The quantity of quality we're describing
-***** =time= When we learned this fact
+***** =Entity= The thing we're modeling
+***** =Attribute= The aspect of the entity we're describing
+***** =Value= The quantity of quality we're describing
+***** =Time= When we learned this fact
 *** Attributes                                                        :slide:
 **** Have a _type_, an _ident_, and a _cardinality_
+***** Optionally other stuff
 **** Types include the usual scalars: strings, numbers, etc.
 **** Also include =refs=
 ***** Value is an entity ID
 ***** Allows datoms to form graphs
 *** Capturing Events - Schema                                         :slide:
-| Attribute             | Type   | Qualifiers |
-|-----------------------+--------+------------|
-| :roomkey.hotel/id     | string | unique     |
-| :roomkey.event/type   | ref    | single     |
-| :roomkey.event/hotels | ref    | many       |
-| :roomkey.event/time   | inst   | single     |
+| Attribute               | Type   | Qualifiers |
+|-------------------------+--------+------------|
+| =:roomkey.hotel/id=     | string | unique     |
+| =:roomkey.event/type=   | ref    | single     |
+| =:roomkey.event/hotels= | ref    | many       |
+| =:roomkey.event/time=   | inst   | single     |
 
-*** Capturing Events - Schema                                         :slide:
-**** TODO A picture of the above schema
+*** Capturing Events - Example                                        :slide:
+file:schema1.png
+*** Capturing Events - Refs                                           :slide:
+file:schema1-with-refs.png
 *** Storing and Retrieving Data in Datomic                            :slide:
 **** One or more datoms submitted to the transactor
 **** Datoms written transactionally to the log
@@ -76,6 +81,51 @@
 ***** Efficient access to all attributes of an entity
 **** AEVT
 ***** Efficient access to particular attributes of an entity
+*** Capturing Events - EAVT                                           :slide:
+    :PROPERTIES:
+    :HTML_CONTAINER_CLASS: eavt-table
+    :END:
+
+|    E | A     |        V |    T |
+|------+-------+----------+------|
+| 1234 | type  |      123 | 1111 |
+| 1234 | time  | 10:13:02 | 1111 |
+| 1234 | hotel |    12345 | 1111 |
+| 1234 | hotel |    23456 | 1111 |
+| 2345 | type  |      234 | 2222 |
+| 2345 | time  | 10:14:22 | 2222 |
+| 2345 | hotel |    23456 | 2222 |
+
+*** Capturing Events - EAVT                                           :slide:
+    :PROPERTIES:
+    :HTML_CONTAINER_CLASS: eavt-table
+    :END:
+
+|    E | A     |        V |    T |
+|------+-------+----------+------|
+| 1234 | 26    |      123 | 1111 |
+| 1234 | 27    | 10:13:02 | 1111 |
+| 1234 | 28    |    12345 | 1111 |
+| 1234 | 28    |    23456 | 1111 |
+| 2345 | 26    |      234 | 2222 |
+| 2345 | 27    | 10:14:22 | 2222 |
+| 2345 | 28    |    23456 | 2222 |
+
+*** Capturing Events - AEVT                                           :slide:
+    :PROPERTIES:
+    :HTML_CONTAINER_CLASS: eavt-table
+    :END:
+
+|    E | A     |        V |    T |
+|------+-------+----------+------|
+| 1234 | 26    |      123 | 1111 |
+| 2345 | 26    |      234 | 2222 |
+| 1234 | 27    | 10:13:02 | 1111 |
+| 2345 | 27    | 10:14:22 | 2222 |
+| 1234 | 28    |    12345 | 1111 |
+| 1234 | 28    |    23456 | 1111 |
+| 2345 | 28    |    23456 | 2222 |
+
 *** AVET and VAET                                                     :slide:
 **** AVET
 ***** Only stores datoms with attribute marked =:db/index=
@@ -84,22 +134,36 @@
 ***** Only stores datoms with attribute of type =ref=
 ***** Allows efficient navigation of relationships in reverse
 ***** Also called the =reverse index=
-*** An Example                                                        :slide:
-| EID          | Attribute             | Value               |
-|--------------+-----------------------+---------------------|
-| <hotel1-eid> | :roomkey.hotel/id     | "Hotel1"            |
-| <hotel2-eid> | :roomkey.hotel/id     | "Hotel2"            |
-| <event1-eid> | :roomkey.event/type   | <impression-eid>    |
-| <event1-eid> | :roomkey.event/hotels | <hotel1-eid>        |
-| <event1-eid> | :roomeky.event/hotels | <hotel2-eid>        |
-| <event1-eid> | :roomkey.event/time   | 2013-09-06T11:29:05 |
+*** Capturing Events - AVET                                           :slide:
+    :PROPERTIES:
+    :HTML_CONTAINER_CLASS: eavt-table
+    :END:
 
-*** An Example                                                        :slide:
-**** TODO: the same data (maybe more) in pictures
-Show the various indexes in pictoral form
+|     E |  A | V         |   T |
+|-------+----+-----------+-----|
+| 12345 | 25 | "Hotel 1" | 888 |
+| 23456 | 25 | "Hotel 2" | 999 |
+
+*** Capturing Events - VAET                                           :slide:
+    :PROPERTIES:
+    :HTML_CONTAINER_CLASS: eavt-table
+    :END:
+
+|    E | A     |        V |    T |
+|------+-------+----------+------|
+| 1234 | 26    |      123 | 1111 |
+| 2345 | 26    |      234 | 2222 |
+| 1234 | 28    |    12345 | 1111 |
+| 1234 | 28    |    23456 | 1111 |
+| 2345 | 28    |    23456 | 2222 |
 
 *** Index Storage and Retrieval                                       :slide:
-**** TODO
+**** Datoms are stored in compressed chunks called =segments=
+**** Segments are stored as a tree
+**** Segments are immutable once written
+**** Each transaction conceptually creates a new root
+**** Actual indexing happens less frequently
+**** Peers pull segments the appropriate index as needed
 *** Trying to Solve the Problem - Query                               :slide:
 #+begin_src clojure
   [:find ?event-type ?hotel-id ?day (count ?event)
@@ -113,183 +177,48 @@ Show the various indexes in pictoral form
    [?event :roomkey.event/type ?event-type]]
 #+end_src
 *** Why This Didn't Work                                              :slide:
-**** TODO
+**** Too much data, not enough time: ~250M datoms, 100ms
+**** No query order eliminates enough data
 *** Anatomy of an Entity ID                                           :slide:
 **** Entity IDs have two parts
 ***** High bits are the =partition= ID
-***** Low bits are a time component
+***** Low bits are a timelike component
 **** Partition ID user-assigned at entity creation
 *** A Change In Approach                                              :slide:
 **** Stop recording time explicitly
+**** Record events using a dedicated partition
 **** Use =seek-datoms=
 ***** Returns =java.lang.Iterable= over raw index data
 ***** Fast, lazy, reduceable
 **** =entid-at=
-***** TODO
+***** Given a time and a partition, get an EID
 **** A big, giant cache
 *** The Code                                                          :slide:
+    :PROPERTIES:
+    :HTML_CONTAINER_CLASS: smaller-code
+    :END:
 #+begin_src clojure
   (defn- datoms-between
-    "Returns a reducible collection of datoms created between the start
-    and end dates in a single partition."
+    "Returns a reducible collection of datoms created
+    between the start and end dates in a single partition."
     [db partition start end]
-    (let [start-e (d/entid-at db partition (profj.time/inst start))
-          end-e (d/entid-at db partition (profj.time/inst end))]
+    (let [start-e (d/entid-at db
+                              partition
+                              start)
+          end-e   (d/entid-at db
+                              partition
+                              end)]
       (->> (d/seek-datoms db :eavt start-e)
            (r/take-while #(< (:e %) end-e)))))
 #+end_src
 *** Why You Shouldn't Always Do This                                  :slide:
-**** TODO Tim makes the point that we don't want to encourage this as a default
-*** Conclusion                                                        :slide:
-**** TODO
+**** Datalog is a big deal
+***** Query as data
+***** Future improvements to query
+**** Segment caching: hot data often in-memory
+** Questions?                                                   :title:slide:
 
-** COMMENT Old slides
-
-*** The Big Pile of Code                                              :slide:
-
-# The basic idea here is to do an analysis of this simple program:
-
-#+begin_src clojure
-  (ns hello
-    (:require [clojure.string :as str]))
-
-  (defn -main [& args]
-    (println "hello" (str/join " and " args)))
-#+end_src
-
-*** What's Going On Here?                                             :slide:
-**** A file gets loaded
-**** It is read
-**** It gets evaluated
-
-*** Loading                                                           :slide:
-**** Primary API for this is =require=
-**** Takes a namespace name and finds a file on CLASSPATH
-**** Turns text in file into Clojure data structures
-**** Evaluates them
-**** Also lets you provide an alias
-
-*** Require                                                           :slide:
-#+begin_src clojure
-  ;; Load $CLASSPATH/net/cgrand/enlive_html.clj
-  (require 'net.cgrand.enlive-html)
-
-  ;; Load it and let us refer to it as html
-  (require '[net.cgrand.enlive-html :as html])
-
-  ;; Still have to use namespaces
-  (net.cgrand.enlive-html/render ...)
-  (html/render ...)
-#+end_src
-
-*** Reading                                                           :slide:
-
-# TODO: Put picture here that shows code turning into data structures.
-# Maybe the hello world code
-
-*** Evaluation                                                        :slide:
-**** Many things in Clojure evaluate to themselves
-***** Maps, sets, vectors, strings, numbers
-**** Some things don't
-***** Lists => invocations
-***** Symbols => ??
-
-*** What is a Symbol?                                                 :slide:
-**** A name
-**** With an optional namespace
-**** Has no value
-
-*** What is a Namespace?                                              :slide:
-**** A mapping from symbols to
-***** Java classes
-***** Vars
-**** Can view via =ns-mappings= and friends
-
-# TODO: Show code at this point
-
-*** What is a Var?                                                    :slide:
-**** An association between a name and a value
-**** COMMENT Name is a symbol without a namespace
-**** COMMENT A var with zero values is /unbound/
-**** COMMENT Usually has one value: the /root/ value
-**** COMMENT Can have a per-thread value, too
-***** COMMENT Via =binding=, iff marked =^:dynamic=
-**** Value is often a function
-**** =def= creates a new var in the current namespace
-**** Optionally associates a value
-
-*** Creating a Var                                                    :slide:
-#+begin_src clojure
-  (ns some.name)
-
-  ;; Var #'some.name/foo is unbound
-  (def foo)
-
-  ;; Var #'some.name/bar has function value
-  (defn bar [x] (+ 2 x))
-#+end_src
-
-*** Referring Vars                                               :fixnowrap:slide:
-**** Vars from other namespaces can be mapped in
-**** =refer= does this
-**** Can pull them in selectively via =:only= or =:exclude=
-
-#+begin_src clojure
-  ;; Refer public symbols in net.cgrand.enlive-html
-  (refer 'net.cgrand.enlive-html)
-
-  ;; Refer only foo and bar
-  (refer '[blah.whatever :only (foo bar)])
-
-  ;; Refer everything except defroutes and GET
-  (refer '[compojure.core :except (defroutes GET)])
-#+end_src
-
-*** How are Symbols Evaluated?                                   :fixnowrap:slide:
-
-file:SymbolResolution.jpeg
-
-*** COMMENT How are Symbols Evaluated?                                :slide:
-**** Does it have a namespace?
-***** Resolve to the var in that namespace
-**** Does it look like =some.package.class=?
-***** Resolve to that Java class
-**** Symbol with no namespace
-***** Is it special form?
-****** Handled specially by the compiler
-***** Is it an imported Java class?
-****** Resolve to that class
-***** Is it a local binding?
-****** Resolve to that local
-***** Is it interned in the current namespace?
-****** Resolve to that var
-
-
-*** The Code Again                                                    :slide:
-
-# At this point we should come back to the original code and show that
-# we understand everything that's going on in it.
-
-#+begin_src clojure
-  (ns hello
-    (:require [clojure.string :as str]))
-
-  (defn -main [& args]
-    (println "hello" (str/join " and " args)))
-#+end_src
-
-*** =ns=                                                              :slide:
-
-Now you can understand even the hairiest of =ns= expressions:
-
-#+begin_src clojure
-  (ns foo.bar
-    (:refer-clojure :exclude [ancestors printf])
-    (:require (clojure test test.junit))
-    (:use (my.lib this that))
-    (:import (java.util Date Timer Random)
-             java.sql.Connection))
-#+end_src
+** Thanks!                                                      :title:slide:
 
 * Footer
 
@@ -310,5 +239,4 @@ Now you can understand even the hairiest of =ns= expressions:
 # org-export-html-style-include-scripts: nil
 # End:
 
-asdf
 
