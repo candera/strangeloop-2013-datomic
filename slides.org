@@ -216,6 +216,12 @@ file:schema1-with-refs.png
 ***** Query as data
 ***** Future improvements to query
 **** Segment caching: hot data often in-memory
+*** Colophon                                                          :slide:
+**** Appreciations
+***** Tim Ewald
+***** Rich Hickey
+**** Typography
+***** Carrois Gothic
 ** Questions?                                                   :title:slide:
 
 ** Thanks!                                                      :title:slide:
