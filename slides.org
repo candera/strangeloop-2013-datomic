@@ -80,7 +80,7 @@ file:schema1-with-refs.png
 **** EAVT
 ***** Efficient access to all attributes of an entity
 **** AEVT
-***** Efficient access to particular attributes of an entity
+***** Efficient access to all values of an attribute
 *** Capturing Events - EAVT                                           :slide:
     :PROPERTIES:
     :HTML_CONTAINER_CLASS: eavt-table
