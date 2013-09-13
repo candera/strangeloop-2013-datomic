@@ -118,13 +118,13 @@ file:schema1-with-refs.png
 
 |    E | A     |        V |    T |
 |------+-------+----------+------|
-| 1234 | 26    |      123 | 1111 |
-| 2345 | 26    |      234 | 2222 |
-| 1234 | 27    | 10:13:02 | 1111 |
-| 2345 | 27    | 10:14:22 | 2222 |
-| 1234 | 28    |    12345 | 1111 |
-| 1234 | 28    |    23456 | 1111 |
-| 2345 | 28    |    23456 | 2222 |
+| 1234 | type  |      123 | 1111 |
+| 2345 | type  |      234 | 2222 |
+| 1234 | time  | 10:13:02 | 1111 |
+| 2345 | time  | 10:14:22 | 2222 |
+| 1234 | hotel |    12345 | 1111 |
+| 1234 | hotel |    23456 | 1111 |
+| 2345 | hotel |    23456 | 2222 |
 
 *** AVET and VAET                                                     :slide:
 **** AVET
@@ -141,8 +141,8 @@ file:schema1-with-refs.png
 
 |     E |  A | V         |   T |
 |-------+----+-----------+-----|
-| 12345 | 25 | "Hotel 1" | 888 |
-| 23456 | 25 | "Hotel 2" | 999 |
+| 12345 | id | "Hotel 1" | 888 |
+| 23456 | id | "Hotel 2" | 999 |
 
 *** Capturing Events - VAET                                           :slide:
     :PROPERTIES:
@@ -151,11 +151,11 @@ file:schema1-with-refs.png
 
 |    E | A     |        V |    T |
 |------+-------+----------+------|
-| 1234 | 26    |      123 | 1111 |
-| 2345 | 26    |      234 | 2222 |
-| 1234 | 28    |    12345 | 1111 |
-| 1234 | 28    |    23456 | 1111 |
-| 2345 | 28    |    23456 | 2222 |
+| 1234 | type  |      123 | 1111 |
+| 2345 | type  |      234 | 2222 |
+| 1234 | hotel |    12345 | 1111 |
+| 1234 | hotel |    23456 | 1111 |
+| 2345 | hotel |    23456 | 2222 |
 
 *** Index Storage and Retrieval                                       :slide:
 **** Datoms are stored in compressed chunks called =segments=
@@ -220,6 +220,8 @@ file:schema1-with-refs.png
 **** Appreciations
 ***** Tim Ewald
 ***** Rich Hickey
+***** Bobby Calderwood
+***** Stuart Halloway
 **** Typography
 ***** Carrois Gothic
 ** Questions?                                                   :title:slide:

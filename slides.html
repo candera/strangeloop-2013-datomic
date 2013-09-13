@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
 <meta name="title" content="Real World Datomic: An Experience Report"/>
 <meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2013-09-08 14:11:35 EDT"/>
+<meta name="generated" content="2013-09-11 18:13:31 EDT"/>
 <meta name="author" content="Craig Andera"/>
 <meta name="description" content=""/>
 <meta name="keywords" content=""/>
@@ -427,19 +427,19 @@
 
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption></caption>
-<colgroup><col class="right" /><col class="right" /><col class="right" /><col class="right" />
+<colgroup><col class="right" /><col class="left" /><col class="right" /><col class="right" />
 </colgroup>
 <thead>
-<tr><th scope="col" class="right">E</th><th scope="col" class="right">A</th><th scope="col" class="right">V</th><th scope="col" class="right">T</th></tr>
+<tr><th scope="col" class="right">E</th><th scope="col" class="left">A</th><th scope="col" class="right">V</th><th scope="col" class="right">T</th></tr>
 </thead>
 <tbody>
-<tr><td class="right">1234</td><td class="right">26</td><td class="right">123</td><td class="right">1111</td></tr>
-<tr><td class="right">2345</td><td class="right">26</td><td class="right">234</td><td class="right">2222</td></tr>
-<tr><td class="right">1234</td><td class="right">27</td><td class="right">10:13:02</td><td class="right">1111</td></tr>
-<tr><td class="right">2345</td><td class="right">27</td><td class="right">10:14:22</td><td class="right">2222</td></tr>
-<tr><td class="right">1234</td><td class="right">28</td><td class="right">12345</td><td class="right">1111</td></tr>
-<tr><td class="right">1234</td><td class="right">28</td><td class="right">23456</td><td class="right">1111</td></tr>
-<tr><td class="right">2345</td><td class="right">28</td><td class="right">23456</td><td class="right">2222</td></tr>
+<tr><td class="right">1234</td><td class="left">type</td><td class="right">123</td><td class="right">1111</td></tr>
+<tr><td class="right">2345</td><td class="left">type</td><td class="right">234</td><td class="right">2222</td></tr>
+<tr><td class="right">1234</td><td class="left">time</td><td class="right">10:13:02</td><td class="right">1111</td></tr>
+<tr><td class="right">2345</td><td class="left">time</td><td class="right">10:14:22</td><td class="right">2222</td></tr>
+<tr><td class="right">1234</td><td class="left">hotel</td><td class="right">12345</td><td class="right">1111</td></tr>
+<tr><td class="right">1234</td><td class="left">hotel</td><td class="right">23456</td><td class="right">1111</td></tr>
+<tr><td class="right">2345</td><td class="left">hotel</td><td class="right">23456</td><td class="right">2222</td></tr>
 </tbody>
 </table>
 
@@ -491,14 +491,14 @@
 
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption></caption>
-<colgroup><col class="right" /><col class="right" /><col class="left" /><col class="right" />
+<colgroup><col class="right" /><col class="left" /><col class="left" /><col class="right" />
 </colgroup>
 <thead>
-<tr><th scope="col" class="right">E</th><th scope="col" class="right">A</th><th scope="col" class="left">V</th><th scope="col" class="right">T</th></tr>
+<tr><th scope="col" class="right">E</th><th scope="col" class="left">A</th><th scope="col" class="left">V</th><th scope="col" class="right">T</th></tr>
 </thead>
 <tbody>
-<tr><td class="right">12345</td><td class="right">25</td><td class="left">"Hotel 1"</td><td class="right">888</td></tr>
-<tr><td class="right">23456</td><td class="right">25</td><td class="left">"Hotel 2"</td><td class="right">999</td></tr>
+<tr><td class="right">12345</td><td class="left">id</td><td class="left">"Hotel 1"</td><td class="right">888</td></tr>
+<tr><td class="right">23456</td><td class="left">id</td><td class="left">"Hotel 2"</td><td class="right">999</td></tr>
 </tbody>
 </table>
 
@@ -514,17 +514,17 @@
 
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption></caption>
-<colgroup><col class="right" /><col class="right" /><col class="right" /><col class="right" />
+<colgroup><col class="right" /><col class="left" /><col class="right" /><col class="right" />
 </colgroup>
 <thead>
-<tr><th scope="col" class="right">E</th><th scope="col" class="right">A</th><th scope="col" class="right">V</th><th scope="col" class="right">T</th></tr>
+<tr><th scope="col" class="right">E</th><th scope="col" class="left">A</th><th scope="col" class="right">V</th><th scope="col" class="right">T</th></tr>
 </thead>
 <tbody>
-<tr><td class="right">1234</td><td class="right">26</td><td class="right">123</td><td class="right">1111</td></tr>
-<tr><td class="right">2345</td><td class="right">26</td><td class="right">234</td><td class="right">2222</td></tr>
-<tr><td class="right">1234</td><td class="right">28</td><td class="right">12345</td><td class="right">1111</td></tr>
-<tr><td class="right">1234</td><td class="right">28</td><td class="right">23456</td><td class="right">1111</td></tr>
-<tr><td class="right">2345</td><td class="right">28</td><td class="right">23456</td><td class="right">2222</td></tr>
+<tr><td class="right">1234</td><td class="left">type</td><td class="right">123</td><td class="right">1111</td></tr>
+<tr><td class="right">2345</td><td class="left">type</td><td class="right">234</td><td class="right">2222</td></tr>
+<tr><td class="right">1234</td><td class="left">hotel</td><td class="right">12345</td><td class="right">1111</td></tr>
+<tr><td class="right">1234</td><td class="left">hotel</td><td class="right">23456</td><td class="right">1111</td></tr>
+<tr><td class="right">2345</td><td class="left">hotel</td><td class="right">23456</td><td class="right">2222</td></tr>
 </tbody>
 </table>
 
@@ -730,6 +730,14 @@
 <li id="sec-1-1-26-1-2">Rich Hickey<br/>
 </li>
 </ul>
+<ul>
+<li id="sec-1-1-26-1-3">Bobby Calderwood<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-26-1-4">Stuart Halloway<br/>
+</li>
+</ul>
 </li>
 </ul>
 <ul>
@@ -782,7 +790,7 @@
 </div>
 
 <div id="postamble">
-<p class="date">Date: 2013-09-08 14:11:35 EDT</p>
+<p class="date">Date: 2013-09-11 18:13:31 EDT</p>
 <p class="author">Author: Craig Andera</p>
 <p class="creator">Org version 7.8.03 with Emacs version 24</p>
 <a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
