@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
 <meta name="title" content="Real World Datomic: An Experience Report"/>
 <meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2013-09-11 18:13:31 EDT"/>
+<meta name="generated" content="2013-09-15 14:17:44 EDT"/>
 <meta name="author" content="Craig Andera"/>
 <meta name="description" content=""/>
 <meta name="keywords" content=""/>
@@ -79,7 +79,8 @@
 <h2 id="sec-1"><span class="section-number-2">1</span> Real-World Datomic: An Experience Report &nbsp;&nbsp;&nbsp;<span class="tag"><span class="title">title</span>&nbsp;<span class="slide">slide</span></span></h2>
 <div class="outline-text-2" id="text-1">
 
-
+<p><img src="cognitect-logo.jpg"  alt="cognitect-logo.jpg" />
+</p>
 
 
 
@@ -106,15 +107,11 @@
 </li>
 </ul>
 <ul>
-<li id="sec-1-1-1-3">craig@thinkrelevance.com<br/>
+<li id="sec-1-1-1-3">craig@cognitect.com<br/>
 </li>
 </ul>
 <ul>
-<li id="sec-1-1-1-4"><span class="todo TODO"> TODO</span> Podcast URL?<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-1-1-5"><span class="todo TODO"> TODO</span> Update what needs updating<br/>
+<li id="sec-1-1-1-4"><a href="http://cognitect.com/podcast">http://cognitect.com/podcast</a><br/>
 </li>
 </ul>
 </div>
@@ -122,7 +119,7 @@
 </div>
 
 <div id="outline-container-1-1-2" class="outline-4">
-<h4 id="sec-1-1-2"><span class="section-number-4">1.1.2</span> Room Key</h4>
+<h4 id="sec-1-1-2"><span class="section-number-4">1.1.2</span> Room Key &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
 <div class="outline-text-4" id="text-1-1-2">
 
 <ul>
@@ -193,21 +190,25 @@
 <ul>
 <li id="sec-1-1-5-2">A datom is EAVT tuple<br/>
 <ul>
-<li id="sec-1-1-5-2-1"><code>Entity</code> The thing we're modeling<br/>
+<li id="sec-1-1-5-2-1"><code>Entity</code> - The thing we're modeling<br/>
 </li>
 </ul>
 <ul>
-<li id="sec-1-1-5-2-2"><code>Attribute</code> The aspect of the entity we're describing<br/>
+<li id="sec-1-1-5-2-2"><code>Attribute</code> - Which aspect we're describing<br/>
 </li>
 </ul>
 <ul>
-<li id="sec-1-1-5-2-3"><code>Value</code> The quantity of quality we're describing<br/>
+<li id="sec-1-1-5-2-3"><code>Value</code> - The quantity or quality<br/>
 </li>
 </ul>
 <ul>
-<li id="sec-1-1-5-2-4"><code>Time</code> When we learned this fact<br/>
+<li id="sec-1-1-5-2-4"><code>Time/Tx</code> - When we learned this fact<br/>
 </li>
 </ul>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-5-3"><i>Yesterday, as part of a transaction that happened at 3:02PM, I learned that Craig likes pizza</i><br/>
 </li>
 </ul>
 </div>
@@ -221,7 +222,7 @@
 <ul>
 <li id="sec-1-1-6-1">Have a <span style="text-decoration:underline;">type</span>, an <span style="text-decoration:underline;">ident</span>, and a <span style="text-decoration:underline;">cardinality</span><br/>
 <ul>
-<li id="sec-1-1-6-1-1">Optionally other stuff<br/>
+<li id="sec-1-1-6-1-1">Optionally other stuff, e.g. uniqueness<br/>
 </li>
 </ul>
 </li>
@@ -240,6 +241,10 @@
 <li id="sec-1-1-6-3-2">Allows datoms to form graphs<br/>
 </li>
 </ul>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-6-4">Set of defined attributes constitutes database schema<br/>
 </li>
 </ul>
 </div>
@@ -321,7 +326,7 @@
 </li>
 </ul>
 <ul>
-<li id="sec-1-1-11-2">Index is logically a sorted set of datoms<br/>
+<li id="sec-1-1-11-2">Index is (logically) a sorted set of datoms<br/>
 </li>
 </ul>
 <ul>
@@ -371,19 +376,19 @@
 
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption></caption>
-<colgroup><col class="right" /><col class="left" /><col class="right" /><col class="right" />
+<colgroup><col class="left" /><col class="left" /><col class="left" /><col class="right" />
 </colgroup>
 <thead>
-<tr><th scope="col" class="right">E</th><th scope="col" class="left">A</th><th scope="col" class="right">V</th><th scope="col" class="right">T</th></tr>
+<tr><th scope="col" class="left">E</th><th scope="col" class="left">A</th><th scope="col" class="left">V</th><th scope="col" class="right">T</th></tr>
 </thead>
 <tbody>
-<tr><td class="right">1234</td><td class="left">type</td><td class="right">123</td><td class="right">1111</td></tr>
-<tr><td class="right">1234</td><td class="left">time</td><td class="right">10:13:02</td><td class="right">1111</td></tr>
-<tr><td class="right">1234</td><td class="left">hotel</td><td class="right">12345</td><td class="right">1111</td></tr>
-<tr><td class="right">1234</td><td class="left">hotel</td><td class="right">23456</td><td class="right">1111</td></tr>
-<tr><td class="right">2345</td><td class="left">type</td><td class="right">234</td><td class="right">2222</td></tr>
-<tr><td class="right">2345</td><td class="left">time</td><td class="right">10:14:22</td><td class="right">2222</td></tr>
-<tr><td class="right">2345</td><td class="left">hotel</td><td class="right">23456</td><td class="right">2222</td></tr>
+<tr><td class="left"><i>&lt;Event 1&gt;</i></td><td class="left">type</td><td class="left"><i>&lt;impression&gt;</i></td><td class="right">1111</td></tr>
+<tr><td class="left"><i>&lt;Event 1&gt;</i></td><td class="left">time</td><td class="left">10:13:02</td><td class="right">1111</td></tr>
+<tr><td class="left"><i>&lt;Event 1&gt;</i></td><td class="left">hotel</td><td class="left"><i>&lt;Hotel 1&gt;</i></td><td class="right">1111</td></tr>
+<tr><td class="left"><i>&lt;Event 1&gt;</i></td><td class="left">hotel</td><td class="left"><i>&lt;Hotel 2&gt;</i></td><td class="right">1111</td></tr>
+<tr><td class="left"><i>&lt;Event 2&gt;</i></td><td class="left">type</td><td class="left"><i>&lt;details&gt;</i></td><td class="right">2222</td></tr>
+<tr><td class="left"><i>&lt;Event 2&gt;</i></td><td class="left">time</td><td class="left">10:14:22</td><td class="right">2222</td></tr>
+<tr><td class="left"><i>&lt;Event 2&gt;</i></td><td class="left">hotel</td><td class="left"><i>&lt;Hotel 2&gt;</i></td><td class="right">2222</td></tr>
 </tbody>
 </table>
 
@@ -407,11 +412,11 @@
 <tbody>
 <tr><td class="right">1234</td><td class="right">26</td><td class="right">123</td><td class="right">1111</td></tr>
 <tr><td class="right">1234</td><td class="right">27</td><td class="right">10:13:02</td><td class="right">1111</td></tr>
-<tr><td class="right">1234</td><td class="right">28</td><td class="right">12345</td><td class="right">1111</td></tr>
-<tr><td class="right">1234</td><td class="right">28</td><td class="right">23456</td><td class="right">1111</td></tr>
+<tr><td class="right">1234</td><td class="right">28</td><td class="right">8765</td><td class="right">1111</td></tr>
+<tr><td class="right">1234</td><td class="right">28</td><td class="right">9876</td><td class="right">1111</td></tr>
 <tr><td class="right">2345</td><td class="right">26</td><td class="right">234</td><td class="right">2222</td></tr>
 <tr><td class="right">2345</td><td class="right">27</td><td class="right">10:14:22</td><td class="right">2222</td></tr>
-<tr><td class="right">2345</td><td class="right">28</td><td class="right">23456</td><td class="right">2222</td></tr>
+<tr><td class="right">2345</td><td class="right">28</td><td class="right">9876</td><td class="right">2222</td></tr>
 </tbody>
 </table>
 
@@ -427,19 +432,19 @@
 
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption></caption>
-<colgroup><col class="right" /><col class="left" /><col class="right" /><col class="right" />
+<colgroup><col class="left" /><col class="left" /><col class="left" /><col class="right" />
 </colgroup>
 <thead>
-<tr><th scope="col" class="right">E</th><th scope="col" class="left">A</th><th scope="col" class="right">V</th><th scope="col" class="right">T</th></tr>
+<tr><th scope="col" class="left">E</th><th scope="col" class="left">A</th><th scope="col" class="left">V</th><th scope="col" class="right">T</th></tr>
 </thead>
 <tbody>
-<tr><td class="right">1234</td><td class="left">type</td><td class="right">123</td><td class="right">1111</td></tr>
-<tr><td class="right">2345</td><td class="left">type</td><td class="right">234</td><td class="right">2222</td></tr>
-<tr><td class="right">1234</td><td class="left">time</td><td class="right">10:13:02</td><td class="right">1111</td></tr>
-<tr><td class="right">2345</td><td class="left">time</td><td class="right">10:14:22</td><td class="right">2222</td></tr>
-<tr><td class="right">1234</td><td class="left">hotel</td><td class="right">12345</td><td class="right">1111</td></tr>
-<tr><td class="right">1234</td><td class="left">hotel</td><td class="right">23456</td><td class="right">1111</td></tr>
-<tr><td class="right">2345</td><td class="left">hotel</td><td class="right">23456</td><td class="right">2222</td></tr>
+<tr><td class="left"><i>&lt;Event 1&gt;</i></td><td class="left">type</td><td class="left"><i>&lt;impression&gt;</i></td><td class="right">1111</td></tr>
+<tr><td class="left"><i>&lt;Event 2&gt;</i></td><td class="left">type</td><td class="left"><i>&lt;details&gt;</i></td><td class="right">2222</td></tr>
+<tr><td class="left"><i>&lt;Event 1&gt;</i></td><td class="left">time</td><td class="left">10:13:02</td><td class="right">1111</td></tr>
+<tr><td class="left"><i>&lt;Event 2&gt;</i></td><td class="left">time</td><td class="left">10:14:22</td><td class="right">2222</td></tr>
+<tr><td class="left"><i>&lt;Event 2&gt;</i></td><td class="left">hotel</td><td class="left"><i>&lt;Hotel 1&gt;</i></td><td class="right">1111</td></tr>
+<tr><td class="left"><i>&lt;Event 1&gt;</i></td><td class="left">hotel</td><td class="left"><i>&lt;Hotel 2&gt;</i></td><td class="right">1111</td></tr>
+<tr><td class="left"><i>&lt;Event 2&gt;</i></td><td class="left">hotel</td><td class="left"><i>&lt;Hotel 2&gt;</i></td><td class="right">2222</td></tr>
 </tbody>
 </table>
 
@@ -491,14 +496,14 @@
 
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption></caption>
-<colgroup><col class="right" /><col class="left" /><col class="left" /><col class="right" />
+<colgroup><col class="left" /><col class="left" /><col class="left" /><col class="right" />
 </colgroup>
 <thead>
-<tr><th scope="col" class="right">E</th><th scope="col" class="left">A</th><th scope="col" class="left">V</th><th scope="col" class="right">T</th></tr>
+<tr><th scope="col" class="left">E</th><th scope="col" class="left">A</th><th scope="col" class="left">V</th><th scope="col" class="right">T</th></tr>
 </thead>
 <tbody>
-<tr><td class="right">12345</td><td class="left">id</td><td class="left">"Hotel 1"</td><td class="right">888</td></tr>
-<tr><td class="right">23456</td><td class="left">id</td><td class="left">"Hotel 2"</td><td class="right">999</td></tr>
+<tr><td class="left"><i>&lt;Hotel 1&gt;</i></td><td class="left">id</td><td class="left">"Hotel 1"</td><td class="right">888</td></tr>
+<tr><td class="left"><i>&lt;Hotel 2&gt;</i></td><td class="left">id</td><td class="left">"Hotel 2"</td><td class="right">999</td></tr>
 </tbody>
 </table>
 
@@ -514,17 +519,17 @@
 
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption></caption>
-<colgroup><col class="right" /><col class="left" /><col class="right" /><col class="right" />
+<colgroup><col class="left" /><col class="left" /><col class="left" /><col class="right" />
 </colgroup>
 <thead>
-<tr><th scope="col" class="right">E</th><th scope="col" class="left">A</th><th scope="col" class="right">V</th><th scope="col" class="right">T</th></tr>
+<tr><th scope="col" class="left">E</th><th scope="col" class="left">A</th><th scope="col" class="left">V</th><th scope="col" class="right">T</th></tr>
 </thead>
 <tbody>
-<tr><td class="right">1234</td><td class="left">type</td><td class="right">123</td><td class="right">1111</td></tr>
-<tr><td class="right">2345</td><td class="left">type</td><td class="right">234</td><td class="right">2222</td></tr>
-<tr><td class="right">1234</td><td class="left">hotel</td><td class="right">12345</td><td class="right">1111</td></tr>
-<tr><td class="right">1234</td><td class="left">hotel</td><td class="right">23456</td><td class="right">1111</td></tr>
-<tr><td class="right">2345</td><td class="left">hotel</td><td class="right">23456</td><td class="right">2222</td></tr>
+<tr><td class="left"><i>&lt;Event 1&gt;</i></td><td class="left">type</td><td class="left"><i>&lt;impression&gt;</i></td><td class="right">1111</td></tr>
+<tr><td class="left"><i>&lt;Event 2&gt;</i></td><td class="left">type</td><td class="left"><i>&lt;details&gt;</i></td><td class="right">2222</td></tr>
+<tr><td class="left"><i>&lt;Event 1&gt;</i></td><td class="left">hotel</td><td class="left"><i>&lt;Hotel 1&gt;</i></td><td class="right">1111</td></tr>
+<tr><td class="left"><i>&lt;Event 1&gt;</i></td><td class="left">hotel</td><td class="left"><i>&lt;Hotel 2&gt;</i></td><td class="right">1111</td></tr>
+<tr><td class="left"><i>&lt;Event 2&gt;</i></td><td class="left">hotel</td><td class="left"><i>&lt;Hotel 2&gt;</i></td><td class="right">2222</td></tr>
 </tbody>
 </table>
 
@@ -554,11 +559,11 @@
 </li>
 </ul>
 <ul>
-<li id="sec-1-1-19-5">Actual indexing happens less frequently<br/>
+<li id="sec-1-1-19-5">Persistent indexes built less frequently<br/>
 </li>
 </ul>
 <ul>
-<li id="sec-1-1-19-6">Peers pull segments the appropriate index as needed<br/>
+<li id="sec-1-1-19-6">Peers pull segments from the appropriate index as needed<br/>
 </li>
 </ul>
 </div>
@@ -632,35 +637,35 @@
 <div class="outline-text-4" id="text-1-1-23">
 
 <ul>
-<li id="sec-1-1-23-1">Stop recording time explicitly<br/>
+<li id="sec-1-1-23-1">A big, giant cache<br/>
 </li>
 </ul>
 <ul>
-<li id="sec-1-1-23-2">Record events using a dedicated partition<br/>
+<li id="sec-1-1-23-2">Stop recording time explicitly<br/>
 </li>
 </ul>
 <ul>
-<li id="sec-1-1-23-3">Use <code>seek-datoms</code><br/>
-<ul>
-<li id="sec-1-1-23-3-1">Returns <code>java.lang.Iterable</code> over raw index data<br/>
+<li id="sec-1-1-23-3">Record events using a dedicated partition<br/>
 </li>
 </ul>
 <ul>
-<li id="sec-1-1-23-3-2">Fast, lazy, reduceable<br/>
-</li>
-</ul>
+<li id="sec-1-1-23-4">Use <code>seek-datoms</code><br/>
+<ul>
+<li id="sec-1-1-23-4-1">Returns <code>java.lang.Iterable</code> over raw index data<br/>
 </li>
 </ul>
 <ul>
-<li id="sec-1-1-23-4"><code>entid-at</code><br/>
-<ul>
-<li id="sec-1-1-23-4-1">Given a time and a partition, get an EID<br/>
+<li id="sec-1-1-23-4-2">Fast, lazy, reduceable<br/>
 </li>
 </ul>
 </li>
 </ul>
 <ul>
-<li id="sec-1-1-23-5">A big, giant cache<br/>
+<li id="sec-1-1-23-5"><code>entid-at</code><br/>
+<ul>
+<li id="sec-1-1-23-5-1">Given a time and a partition, get an EID<br/>
+</li>
+</ul>
 </li>
 </ul>
 </div>
@@ -674,7 +679,7 @@
 
 
 
-<pre class="src src-clojure">(<span style="color: #00ffff;">defn-</span> <span style="color: #87cefa;">datoms-between</span>
+<pre class="src src-clojure">(<span style="color: #00ffff;">defn</span> <span style="color: #87cefa;">datoms-between</span>
   <span style="color: #ffa07a;">"Returns a reducible collection of datoms created</span>
 <span style="color: #ffa07a;">  between the start and end dates in a single partition."</span>
   [db partition start end]
@@ -699,11 +704,15 @@
 <ul>
 <li id="sec-1-1-25-1">Datalog is a big deal<br/>
 <ul>
-<li id="sec-1-1-25-1-1">Query as data<br/>
+<li id="sec-1-1-25-1-1">Joins!<br/>
 </li>
 </ul>
 <ul>
-<li id="sec-1-1-25-1-2">Future improvements to query<br/>
+<li id="sec-1-1-25-1-2">Query as data<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-25-1-3">Future improvements to query<br/>
 </li>
 </ul>
 </li>
@@ -723,19 +732,23 @@
 <ul>
 <li id="sec-1-1-26-1">Appreciations<br/>
 <ul>
-<li id="sec-1-1-26-1-1">Tim Ewald<br/>
+<li id="sec-1-1-26-1-1">Room Key<br/>
 </li>
 </ul>
 <ul>
-<li id="sec-1-1-26-1-2">Rich Hickey<br/>
+<li id="sec-1-1-26-1-2">Tim Ewald<br/>
 </li>
 </ul>
 <ul>
-<li id="sec-1-1-26-1-3">Bobby Calderwood<br/>
+<li id="sec-1-1-26-1-3">Rich Hickey<br/>
 </li>
 </ul>
 <ul>
-<li id="sec-1-1-26-1-4">Stuart Halloway<br/>
+<li id="sec-1-1-26-1-4">Bobby Calderwood<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-26-1-5">Stuart Halloway<br/>
 </li>
 </ul>
 </li>
@@ -790,7 +803,7 @@
 </div>
 
 <div id="postamble">
-<p class="date">Date: 2013-09-11 18:13:31 EDT</p>
+<p class="date">Date: 2013-09-15 14:17:44 EDT</p>
 <p class="author">Author: Craig Andera</p>
 <p class="creator">Org version 7.8.03 with Emacs version 24</p>
 <a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>

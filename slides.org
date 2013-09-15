@@ -3,6 +3,7 @@
 #+EMAIL: craig@thinkrelevance.com
 
 * Real-World Datomic: An Experience Report                      :title:slide:
+[[file:cognitect-logo.jpg]]
 
 # Note: things using this comment syntax will not be exported
 
@@ -23,10 +24,9 @@
 *** Me                                                                :slide:
 **** Craig Andera
 **** @craigandera
-**** craig@thinkrelevance.com
-**** TODO Podcast URL?
-**** TODO Update what needs updating
-*** Room Key
+**** craig@cognitect.com
+**** http://cognitect.com/podcast
+*** Room Key                                                          :slide:
 **** http://roomkey.com
 **** Employer of Clojure Programmers
 **** http://is.gd/rkpodcast
@@ -42,17 +42,19 @@
 *** Datomic's Data Model                                              :slide:
 **** All facts stored as =datoms=
 **** A datom is EAVT tuple
-***** =Entity= The thing we're modeling
-***** =Attribute= The aspect of the entity we're describing
-***** =Value= The quantity of quality we're describing
-***** =Time= When we learned this fact
+***** =Entity= - The thing we're modeling
+***** =Attribute= - Which aspect we're describing
+***** =Value= - The quantity or quality
+***** =Time/Tx= - When we learned this fact
+**** /Yesterday, as part of a transaction that happened at 3:02PM, I learned that Craig likes pizza/
 *** Attributes                                                        :slide:
 **** Have a _type_, an _ident_, and a _cardinality_
-***** Optionally other stuff
+***** Optionally other stuff, e.g. uniqueness
 **** Types include the usual scalars: strings, numbers, etc.
 **** Also include =refs=
 ***** Value is an entity ID
 ***** Allows datoms to form graphs
+**** Set of defined attributes constitutes database schema
 *** Capturing Events - Schema                                         :slide:
 | Attribute               | Type   | Qualifiers |
 |-------------------------+--------+------------|
@@ -72,7 +74,7 @@ file:schema1-with-refs.png
 **** All datoms also stored redundantly in the =indexes=
 *** Datomic Indexes                                                   :slide:
 **** Every datom stored in two or more =indexes=
-**** Index is logically a sorted set of datoms
+**** Index is (logically) a sorted set of datoms
 **** Indexes named by their sort order
 **** EAVT, AEVT, AVET, and VAET
 *** EAVT and AEVT                                                     :slide:
@@ -86,45 +88,45 @@ file:schema1-with-refs.png
     :HTML_CONTAINER_CLASS: eavt-table
     :END:
 
-|    E | A     |        V |    T |
-|------+-------+----------+------|
-| 1234 | type  |      123 | 1111 |
-| 1234 | time  | 10:13:02 | 1111 |
-| 1234 | hotel |    12345 | 1111 |
-| 1234 | hotel |    23456 | 1111 |
-| 2345 | type  |      234 | 2222 |
-| 2345 | time  | 10:14:22 | 2222 |
-| 2345 | hotel |    23456 | 2222 |
+| E           | A     | V              |    T |
+|-------------+-------+----------------+------|
+| /<Event 1>/ | type  | /<impression>/ | 1111 |
+| /<Event 1>/ | time  | 10:13:02       | 1111 |
+| /<Event 1>/ | hotel | /<Hotel 1>/    | 1111 |
+| /<Event 1>/ | hotel | /<Hotel 2>/    | 1111 |
+| /<Event 2>/ | type  | /<details>/    | 2222 |
+| /<Event 2>/ | time  | 10:14:22       | 2222 |
+| /<Event 2>/ | hotel | /<Hotel 2>/    | 2222 |
 
 *** Capturing Events - EAVT                                           :slide:
     :PROPERTIES:
     :HTML_CONTAINER_CLASS: eavt-table
     :END:
 
-|    E | A     |        V |    T |
-|------+-------+----------+------|
-| 1234 | 26    |      123 | 1111 |
-| 1234 | 27    | 10:13:02 | 1111 |
-| 1234 | 28    |    12345 | 1111 |
-| 1234 | 28    |    23456 | 1111 |
-| 2345 | 26    |      234 | 2222 |
-| 2345 | 27    | 10:14:22 | 2222 |
-| 2345 | 28    |    23456 | 2222 |
+|    E |  A |        V |    T |
+|------+----+----------+------|
+| 1234 | 26 |      123 | 1111 |
+| 1234 | 27 | 10:13:02 | 1111 |
+| 1234 | 28 |     8765 | 1111 |
+| 1234 | 28 |     9876 | 1111 |
+| 2345 | 26 |      234 | 2222 |
+| 2345 | 27 | 10:14:22 | 2222 |
+| 2345 | 28 |     9876 | 2222 |
 
 *** Capturing Events - AEVT                                           :slide:
     :PROPERTIES:
     :HTML_CONTAINER_CLASS: eavt-table
     :END:
 
-|    E | A     |        V |    T |
-|------+-------+----------+------|
-| 1234 | type  |      123 | 1111 |
-| 2345 | type  |      234 | 2222 |
-| 1234 | time  | 10:13:02 | 1111 |
-| 2345 | time  | 10:14:22 | 2222 |
-| 1234 | hotel |    12345 | 1111 |
-| 1234 | hotel |    23456 | 1111 |
-| 2345 | hotel |    23456 | 2222 |
+| E           | A     | V              |    T |
+|-------------+-------+----------------+------|
+| /<Event 1>/ | type  | /<impression>/ | 1111 |
+| /<Event 2>/ | type  | /<details>/    | 2222 |
+| /<Event 1>/ | time  | 10:13:02       | 1111 |
+| /<Event 2>/ | time  | 10:14:22       | 2222 |
+| /<Event 2>/ | hotel | /<Hotel 1>/    | 1111 |
+| /<Event 1>/ | hotel | /<Hotel 2>/    | 1111 |
+| /<Event 2>/ | hotel | /<Hotel 2>/    | 2222 |
 
 *** AVET and VAET                                                     :slide:
 **** AVET
@@ -139,31 +141,31 @@ file:schema1-with-refs.png
     :HTML_CONTAINER_CLASS: eavt-table
     :END:
 
-|     E |  A | V         |   T |
-|-------+----+-----------+-----|
-| 12345 | id | "Hotel 1" | 888 |
-| 23456 | id | "Hotel 2" | 999 |
+| E           | A  | V         |   T |
+|-------------+----+-----------+-----|
+| /<Hotel 1>/ | id | "Hotel 1" | 888 |
+| /<Hotel 2>/ | id | "Hotel 2" | 999 |
 
 *** Capturing Events - VAET                                           :slide:
     :PROPERTIES:
     :HTML_CONTAINER_CLASS: eavt-table
     :END:
 
-|    E | A     |        V |    T |
-|------+-------+----------+------|
-| 1234 | type  |      123 | 1111 |
-| 2345 | type  |      234 | 2222 |
-| 1234 | hotel |    12345 | 1111 |
-| 1234 | hotel |    23456 | 1111 |
-| 2345 | hotel |    23456 | 2222 |
+| E           | A     | V              |    T |
+|-------------+-------+----------------+------|
+| /<Event 1>/ | type  | /<impression>/ | 1111 |
+| /<Event 2>/ | type  | /<details>/    | 2222 |
+| /<Event 1>/ | hotel | /<Hotel 1>/    | 1111 |
+| /<Event 1>/ | hotel | /<Hotel 2>/    | 1111 |
+| /<Event 2>/ | hotel | /<Hotel 2>/    | 2222 |
 
 *** Index Storage and Retrieval                                       :slide:
 **** Datoms are stored in compressed chunks called =segments=
 **** Segments are stored as a tree
 **** Segments are immutable once written
 **** Each transaction conceptually creates a new root
-**** Actual indexing happens less frequently
-**** Peers pull segments the appropriate index as needed
+**** Persistent indexes built less frequently
+**** Peers pull segments from the appropriate index as needed
 *** Trying to Solve the Problem - Query                               :slide:
 #+begin_src clojure
   [:find ?event-type ?hotel-id ?day (count ?event)
@@ -185,6 +187,7 @@ file:schema1-with-refs.png
 ***** Low bits are a timelike component
 **** Partition ID user-assigned at entity creation
 *** A Change In Approach                                              :slide:
+**** A big, giant cache
 **** Stop recording time explicitly
 **** Record events using a dedicated partition
 **** Use =seek-datoms=
@@ -192,13 +195,12 @@ file:schema1-with-refs.png
 ***** Fast, lazy, reduceable
 **** =entid-at=
 ***** Given a time and a partition, get an EID
-**** A big, giant cache
 *** The Code                                                          :slide:
     :PROPERTIES:
     :HTML_CONTAINER_CLASS: smaller-code
     :END:
 #+begin_src clojure
-  (defn- datoms-between
+  (defn datoms-between
     "Returns a reducible collection of datoms created
     between the start and end dates in a single partition."
     [db partition start end]
@@ -213,11 +215,13 @@ file:schema1-with-refs.png
 #+end_src
 *** Why You Shouldn't Always Do This                                  :slide:
 **** Datalog is a big deal
+***** Joins!
 ***** Query as data
 ***** Future improvements to query
 **** Segment caching: hot data often in-memory
 *** Colophon                                                          :slide:
 **** Appreciations
+***** Room Key
 ***** Tim Ewald
 ***** Rich Hickey
 ***** Bobby Calderwood
