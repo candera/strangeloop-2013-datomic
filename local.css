@@ -80,3 +80,10 @@ p.image {
     font-size: 80%;
 }
     
+td code {
+    font-weight: bold;
+}
+
+li code {
+    font-weight: bold;
+}
