@@ -166,6 +166,12 @@ file:schema1-with-refs.png
 **** Each transaction conceptually creates a new root
 **** Persistent indexes built less frequently
 **** Peers pull segments from the appropriate index as needed
+*** Index Trees                                                       :slide:
+[[file:index-tree.png]]
+*** Indexing - Append                                                 :slide:
+[[file:index-tree-append.png]]
+*** Indexing - Highly Nonlocal                                        :slide:
+[[file:index-tree-worst-case.png]]
 *** Trying to Solve the Problem - Query                               :slide:
 #+begin_src clojure
   [:find ?event-type ?hotel-id ?day (count ?event)

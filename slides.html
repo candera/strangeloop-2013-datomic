@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
 <meta name="title" content="Real World Datomic: An Experience Report"/>
 <meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2013-09-15 14:17:44 EDT"/>
+<meta name="generated" content="2013-09-18 12:08:45 CDT"/>
 <meta name="author" content="Craig Andera"/>
 <meta name="description" content=""/>
 <meta name="keywords" content=""/>
@@ -57,13 +57,16 @@
 <li><a href="#sec-1-1-17">1.1.17 Capturing Events - AVET</a></li>
 <li><a href="#sec-1-1-18">1.1.18 Capturing Events - VAET</a></li>
 <li><a href="#sec-1-1-19">1.1.19 Index Storage and Retrieval</a></li>
-<li><a href="#sec-1-1-20">1.1.20 Trying to Solve the Problem - Query</a></li>
-<li><a href="#sec-1-1-21">1.1.21 Why This Didn't Work</a></li>
-<li><a href="#sec-1-1-22">1.1.22 Anatomy of an Entity ID</a></li>
-<li><a href="#sec-1-1-23">1.1.23 A Change In Approach</a></li>
-<li><a href="#sec-1-1-24">1.1.24 The Code</a></li>
-<li><a href="#sec-1-1-25">1.1.25 Why You Shouldn't Always Do This</a></li>
-<li><a href="#sec-1-1-26">1.1.26 Colophon</a></li>
+<li><a href="#sec-1-1-20">1.1.20 Index Trees</a></li>
+<li><a href="#sec-1-1-21">1.1.21 Indexing - Append</a></li>
+<li><a href="#sec-1-1-22">1.1.22 Indexing - Highly Nonlocal</a></li>
+<li><a href="#sec-1-1-23">1.1.23 Trying to Solve the Problem - Query</a></li>
+<li><a href="#sec-1-1-24">1.1.24 Why This Didn't Work</a></li>
+<li><a href="#sec-1-1-25">1.1.25 Anatomy of an Entity ID</a></li>
+<li><a href="#sec-1-1-26">1.1.26 A Change In Approach</a></li>
+<li><a href="#sec-1-1-27">1.1.27 The Code</a></li>
+<li><a href="#sec-1-1-28">1.1.28 Why You Shouldn't Always Do This</a></li>
+<li><a href="#sec-1-1-29">1.1.29 Colophon</a></li>
 </ul>
 </li>
 <li><a href="#sec-1-2">1.2 Questions?</a></li>
@@ -571,8 +574,35 @@
 </div>
 
 <div id="outline-container-1-1-20" class="outline-4">
-<h4 id="sec-1-1-20"><span class="section-number-4">1.1.20</span> Trying to Solve the Problem - Query &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<h4 id="sec-1-1-20"><span class="section-number-4">1.1.20</span> Index Trees &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
 <div class="outline-text-4" id="text-1-1-20">
+
+<p><img src="index-tree.png"  alt="index-tree.png" />
+</p></div>
+
+</div>
+
+<div id="outline-container-1-1-21" class="outline-4">
+<h4 id="sec-1-1-21"><span class="section-number-4">1.1.21</span> Indexing - Append &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-21">
+
+<p><img src="index-tree-append.png"  alt="index-tree-append.png" />
+</p></div>
+
+</div>
+
+<div id="outline-container-1-1-22" class="outline-4">
+<h4 id="sec-1-1-22"><span class="section-number-4">1.1.22</span> Indexing - Highly Nonlocal &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-22">
+
+<p><img src="index-tree-worst-case.png"  alt="index-tree-worst-case.png" />
+</p></div>
+
+</div>
+
+<div id="outline-container-1-1-23" class="outline-4">
+<h4 id="sec-1-1-23"><span class="section-number-4">1.1.23</span> Trying to Solve the Problem - Query &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-23">
 
 
 
@@ -592,89 +622,89 @@
 
 </div>
 
-<div id="outline-container-1-1-21" class="outline-4">
-<h4 id="sec-1-1-21"><span class="section-number-4">1.1.21</span> Why This Didn't Work &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
-<div class="outline-text-4" id="text-1-1-21">
-
-<ul>
-<li id="sec-1-1-21-1">Too much data, not enough time: ~250M datoms, 100ms<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-1-21-2">No query order eliminates enough data<br/>
-</li>
-</ul>
-</div>
-
-</div>
-
-<div id="outline-container-1-1-22" class="outline-4">
-<h4 id="sec-1-1-22"><span class="section-number-4">1.1.22</span> Anatomy of an Entity ID &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
-<div class="outline-text-4" id="text-1-1-22">
-
-<ul>
-<li id="sec-1-1-22-1">Entity IDs have two parts<br/>
-<ul>
-<li id="sec-1-1-22-1-1">High bits are the <code>partition</code> ID<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-1-22-1-2">Low bits are a timelike component<br/>
-</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li id="sec-1-1-22-2">Partition ID user-assigned at entity creation<br/>
-</li>
-</ul>
-</div>
-
-</div>
-
-<div id="outline-container-1-1-23" class="outline-4">
-<h4 id="sec-1-1-23"><span class="section-number-4">1.1.23</span> A Change In Approach &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
-<div class="outline-text-4" id="text-1-1-23">
-
-<ul>
-<li id="sec-1-1-23-1">A big, giant cache<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-1-23-2">Stop recording time explicitly<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-1-23-3">Record events using a dedicated partition<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-1-23-4">Use <code>seek-datoms</code><br/>
-<ul>
-<li id="sec-1-1-23-4-1">Returns <code>java.lang.Iterable</code> over raw index data<br/>
-</li>
-</ul>
-<ul>
-<li id="sec-1-1-23-4-2">Fast, lazy, reduceable<br/>
-</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li id="sec-1-1-23-5"><code>entid-at</code><br/>
-<ul>
-<li id="sec-1-1-23-5-1">Given a time and a partition, get an EID<br/>
-</li>
-</ul>
-</li>
-</ul>
-</div>
-
-</div>
-
-<div id="outline-container-1-1-24" class="outline-4 smaller-code">
-<h4 id="sec-1-1-24"><span class="section-number-4">1.1.24</span> The Code &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div id="outline-container-1-1-24" class="outline-4">
+<h4 id="sec-1-1-24"><span class="section-number-4">1.1.24</span> Why This Didn't Work &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
 <div class="outline-text-4" id="text-1-1-24">
+
+<ul>
+<li id="sec-1-1-24-1">Too much data, not enough time: ~250M datoms, 100ms<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-24-2">No query order eliminates enough data<br/>
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-1-1-25" class="outline-4">
+<h4 id="sec-1-1-25"><span class="section-number-4">1.1.25</span> Anatomy of an Entity ID &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-25">
+
+<ul>
+<li id="sec-1-1-25-1">Entity IDs have two parts<br/>
+<ul>
+<li id="sec-1-1-25-1-1">High bits are the <code>partition</code> ID<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-25-1-2">Low bits are a timelike component<br/>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-25-2">Partition ID user-assigned at entity creation<br/>
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-1-1-26" class="outline-4">
+<h4 id="sec-1-1-26"><span class="section-number-4">1.1.26</span> A Change In Approach &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-26">
+
+<ul>
+<li id="sec-1-1-26-1">A big, giant cache<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-26-2">Stop recording time explicitly<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-26-3">Record events using a dedicated partition<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-26-4">Use <code>seek-datoms</code><br/>
+<ul>
+<li id="sec-1-1-26-4-1">Returns <code>java.lang.Iterable</code> over raw index data<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-26-4-2">Fast, lazy, reduceable<br/>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li id="sec-1-1-26-5"><code>entid-at</code><br/>
+<ul>
+<li id="sec-1-1-26-5-1">Given a time and a partition, get an EID<br/>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-1-1-27" class="outline-4 smaller-code">
+<h4 id="sec-1-1-27"><span class="section-number-4">1.1.27</span> The Code &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-27">
 
 
 
@@ -697,66 +727,66 @@
 
 </div>
 
-<div id="outline-container-1-1-25" class="outline-4">
-<h4 id="sec-1-1-25"><span class="section-number-4">1.1.25</span> Why You Shouldn't Always Do This &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
-<div class="outline-text-4" id="text-1-1-25">
+<div id="outline-container-1-1-28" class="outline-4">
+<h4 id="sec-1-1-28"><span class="section-number-4">1.1.28</span> Why You Shouldn't Always Do This &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-28">
 
 <ul>
-<li id="sec-1-1-25-1">Datalog is a big deal<br/>
+<li id="sec-1-1-28-1">Datalog is a big deal<br/>
 <ul>
-<li id="sec-1-1-25-1-1">Joins!<br/>
+<li id="sec-1-1-28-1-1">Joins!<br/>
 </li>
 </ul>
 <ul>
-<li id="sec-1-1-25-1-2">Query as data<br/>
+<li id="sec-1-1-28-1-2">Query as data<br/>
 </li>
 </ul>
 <ul>
-<li id="sec-1-1-25-1-3">Future improvements to query<br/>
+<li id="sec-1-1-28-1-3">Future improvements to query<br/>
 </li>
 </ul>
 </li>
 </ul>
 <ul>
-<li id="sec-1-1-25-2">Segment caching: hot data often in-memory<br/>
+<li id="sec-1-1-28-2">Segment caching: hot data often in-memory<br/>
 </li>
 </ul>
 </div>
 
 </div>
 
-<div id="outline-container-1-1-26" class="outline-4">
-<h4 id="sec-1-1-26"><span class="section-number-4">1.1.26</span> Colophon &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
-<div class="outline-text-4" id="text-1-1-26">
+<div id="outline-container-1-1-29" class="outline-4">
+<h4 id="sec-1-1-29"><span class="section-number-4">1.1.29</span> Colophon &nbsp;&nbsp;&nbsp;<span class="tag"><span class="slide">slide</span></span></h4>
+<div class="outline-text-4" id="text-1-1-29">
 
 <ul>
-<li id="sec-1-1-26-1">Appreciations<br/>
+<li id="sec-1-1-29-1">Appreciations<br/>
 <ul>
-<li id="sec-1-1-26-1-1">Room Key<br/>
+<li id="sec-1-1-29-1-1">Room Key<br/>
 </li>
 </ul>
 <ul>
-<li id="sec-1-1-26-1-2">Tim Ewald<br/>
+<li id="sec-1-1-29-1-2">Tim Ewald<br/>
 </li>
 </ul>
 <ul>
-<li id="sec-1-1-26-1-3">Rich Hickey<br/>
+<li id="sec-1-1-29-1-3">Rich Hickey<br/>
 </li>
 </ul>
 <ul>
-<li id="sec-1-1-26-1-4">Bobby Calderwood<br/>
+<li id="sec-1-1-29-1-4">Bobby Calderwood<br/>
 </li>
 </ul>
 <ul>
-<li id="sec-1-1-26-1-5">Stuart Halloway<br/>
+<li id="sec-1-1-29-1-5">Stuart Halloway<br/>
 </li>
 </ul>
 </li>
 </ul>
 <ul>
-<li id="sec-1-1-26-2">Typography<br/>
+<li id="sec-1-1-29-2">Typography<br/>
 <ul>
-<li id="sec-1-1-26-2-1">Carrois Gothic<br/>
+<li id="sec-1-1-29-2-1">Carrois Gothic<br/>
 </li>
 </ul>
 </li>
@@ -803,7 +833,7 @@
 </div>
 
 <div id="postamble">
-<p class="date">Date: 2013-09-15 14:17:44 EDT</p>
+<p class="date">Date: 2013-09-18 12:08:45 CDT</p>
 <p class="author">Author: Craig Andera</p>
 <p class="creator">Org version 7.8.03 with Emacs version 24</p>
 <a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
