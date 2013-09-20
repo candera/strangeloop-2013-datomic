@@ -68,9 +68,9 @@ file:schema1.png
 *** Capturing Events - Refs                                           :slide:
 file:schema1-with-refs.png
 *** Storing and Retrieving Data in Datomic                            :slide:
-**** One or more datoms submitted to the transactor
+**** One or more EAV tuples submitted to the transactor
+**** All are given the same =t= value
 **** Datoms written transactionally to the log
-**** All datoms in the transaction get the same =t= value
 **** All datoms also stored redundantly in the =indexes=
 *** Datomic Indexes                                                   :slide:
 **** Every datom stored in two or more =indexes=
