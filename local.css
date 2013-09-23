@@ -59,6 +59,7 @@ thead {
 
 .eavt-table table {
     font-family: 'Courier New';
+    font-weight: bold;
 }
 
 .eavt-table thead {
@@ -79,3 +80,10 @@ p.image {
     font-size: 80%;
 }
     
+td code {
+    font-weight: bold;
+}
+
+li code {
+    font-weight: bold;
+}
