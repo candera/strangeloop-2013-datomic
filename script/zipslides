@@ -6,4 +6,4 @@ ZIPNAME=strangeloop-2013-datomic-experience-report.zip
 
 mkdir -p out
 rm out/$ZIPNAME
-zip out/$ZIPNAME *.js *.html *.css *.png *.org
+zip out/$ZIPNAME *.js *.html *.css *.png *.org *.jpg
